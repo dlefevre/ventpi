@@ -1,0 +1,11 @@
+---
+# file: main.yaml
+
+- hosts: all
+  roles:
+    - role: fail2ban
+      tags: fail2ban
+
+    - role: unattended-upgrades
+      tags: upgrades
+      

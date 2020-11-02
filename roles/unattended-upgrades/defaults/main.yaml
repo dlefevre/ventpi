@@ -1,0 +1,10 @@
+---
+# file: roles/unattended-upgrades/defaults/main.yaml
+
+timer_overrides:
+  apt-daily:
+    time: 02:00
+    randomized_delay: 30m
+  apt-daily-upgrade:
+    time: 04:00
+    randomized_delay: 0

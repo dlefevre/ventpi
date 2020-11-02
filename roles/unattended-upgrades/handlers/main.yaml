@@ -1,0 +1,6 @@
+---
+# file: roles/unattended-upgrades/handlers/main.yaml
+
+- name: Restart timers
+  service: name={{ item.key }}.timer state=restarted
+  with_dict: '{{ timer_overrides }}'

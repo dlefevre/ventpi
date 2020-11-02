@@ -1,0 +1,6 @@
+---
+# file: roles/fail2ban/defaults/main.yaml
+
+f2b_bantime: 86400
+f2b_findtime: 900
+f2b_maxretry: 5
