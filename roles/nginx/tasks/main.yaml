@@ -1,0 +1,11 @@
+---
+
+- name: Install nginx
+  apt: name=nginx
+
+- name: Provision configuration
+  template: src=default.j2 dest=/etc/nginx/sites-available/default 
+  notify: Restart nginx
+
+- name: Enable nginx daemon
+  systemd: name=nginx state=started enabled=yes

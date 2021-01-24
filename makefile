@@ -9,3 +9,7 @@ check:
 .PHONY: nodejs
 nodejs:
 	ansible-playbook -i inventory main.yaml --tags nodejs
+
+.PHONY: nginx
+nginx:
+	ansible-playbook -i inventory main.yaml --tags nginx

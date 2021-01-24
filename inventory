@@ -5,6 +5,4 @@ ventpi ansible_user=pi
 # Use python 3
 ansible_python_interpreter=/usr/bin/env python3
 
-# Privilege elevation
-ansible_become=yes
-ansible_become_user=root
+

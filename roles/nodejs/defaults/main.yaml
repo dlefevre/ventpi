@@ -1,0 +1,9 @@
+---
+
+ventilation_controller_repo: https://github.com/dlefevre/ventilation-controller.git
+ventilation_controller_home: /opt/ventilation-controller
+
+node_port: 3000
+node_host: 127.0.0.1
+node_user: node
+node_group: node

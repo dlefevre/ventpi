@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Ventilation Controller
+After=network.target
+
+[Service]
+Environment=NODE_HOST={{ node_host }}
+Environment=NODE_PORT={{ node_port }}
+Environment=NODE_LOGLEVEL=info
+Type=simple
+User={{ node_user }}
+WorkingDirectory={{ ventilation_controller_home }}
+ExecStart=/usr/bin/node {{ ventilation_controller_home }}/server.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

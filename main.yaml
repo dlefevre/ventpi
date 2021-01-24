@@ -2,6 +2,7 @@
 # file: main.yaml
 
 - hosts: all
+  become: yes
   roles:
     - role: fail2ban
       tags: fail2ban
@@ -11,4 +12,7 @@
       
     - role: nodejs
       tags: nodejs
+    
+    - role: nginx
+      tags: nginx
       

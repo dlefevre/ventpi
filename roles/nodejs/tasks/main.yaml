@@ -8,3 +8,40 @@
       - npm
       - node-express
       
+- name: Create node group
+  group: name={{ node_group }}
+
+- name: Create node users
+  user: name={{ node_user }} group={{ node_group }} groups=gpio shell=/usr/sbin/nologin
+
+- name: Create installation owner
+  user: name={{ node_user }}_inst group={{ node_group }} shell=/usr/sbin/nologin
+  
+- name: Install Ventilation Controller
+  git:
+    repo: "{{ ventilation_controller_repo }}"
+    dest: "{{ ventilation_controller_home }}"
+    force: yes
+  notify: Restart Ventilation Controller
+
+- name: Correct privileges
+  file:
+    path: "{{ ventilation_controller_home }}"
+    owner: "{{ node_user }}_inst"
+    group: "{{ node_group }}"
+    state: directory
+    recurse: yes
+    
+- name: Install package dependencies
+  npm: path={{ ventilation_controller_home }} production=yes
+  become: yes
+  become_user: "{{ node_user }}_inst"
+  notify: Restart Ventilation Controller
+
+- name: Install systemd service unit
+  template: src=ventilation-controller.service.j2 dest=/etc/systemd/system/ventilation-controller.service
+  notify: Restart Ventilation Controller
+
+- name: Enable ventilation-controller service
+  systemd: name=ventilation-controller state=started enabled=yes daemon_reload=yes
+  

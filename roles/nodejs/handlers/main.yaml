@@ -1,0 +1,5 @@
+---
+
+- name: Restart Ventilation Controller
+  systemd: name=ventilation-controller state=restarted
+  
