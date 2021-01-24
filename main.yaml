@@ -9,3 +9,6 @@
     - role: unattended-upgrades
       tags: upgrades
       
+    - role: nodejs
+      tags: nodejs
+      

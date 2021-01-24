@@ -1,0 +1,10 @@
+---
+# file: roles/nodejs/tasks/main.yaml
+
+- name: Install NodeJS
+  apt:
+    name:
+      - nodejs
+      - npm
+      - node-express
+      
