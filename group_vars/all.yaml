@@ -1,0 +1,15 @@
+---
+
+# Automated ventilation schedue
+schedule:
+  morning_weekdays:
+    hour: 7
+    minute: 00
+    weekday: 1-5
+    command: timer 60
+
+  morning_weekends:
+    hour: 8
+    minute: 00
+    weekday: 6-7
+    command: timer 60

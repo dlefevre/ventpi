@@ -1,0 +1,18 @@
+---
+
+- name: Install ventcli script
+  copy: src=ventcli dest=/usr/local/bin/ventcli mode=0755
+
+- name: Install ventcli configuration
+  template: src=ventcli.conf.j2 dest=/usr/local/etc/ventcli.conf mode=0644
+
+- name: Schedule tasks
+  cron:
+    hour: "{{ item.value.hour | default('*') }}"
+    minute: "{{ item.value.minute | default('*') }}"
+    weekday: "{{ item.value.weekday | default('*') }}"
+    user: "{{ schedule_user }}"
+    name: "{{ item.key }}"
+    job: /usr/local/bin/ventcli {{ item.value.command }}
+    state: "{{ item.value.state | default('present') }}"
+  with_dict: "{{ schedule }}"

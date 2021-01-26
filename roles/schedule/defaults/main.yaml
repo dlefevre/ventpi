@@ -1,0 +1,6 @@
+---
+
+ventcli_api_url: http://localhost/api/ventilation
+
+schedule_user: node
+schedule: []

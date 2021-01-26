@@ -16,3 +16,6 @@
     - role: nginx
       tags: nginx
       
+    - role: schedule
+      tags: schedule
+      

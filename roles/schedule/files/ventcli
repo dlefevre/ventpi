@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+
+import requests 
+import sys
+import os.path
+import configparser
+
+
+def help(args):
+    if "mode" in args:
+        helpMode()
+        return 0
+    if "timer" in args:
+        helpTimer()
+        return 0
+
+    print("supported commands:")
+    print("  - help")
+    print("  - mode: Set the ventilation mode.")
+    print("  - timer: Set the ventilation to full strengt for a fixed period of time.")
+
+    return 0
+
+
+def helpMode():
+    print("usage: ventcli mode <mode name>")
+    print("<mode name> may be any of the following:")
+    print("  - away: Away mode.")
+    print("  - auto: Automatic mode (responds to humidity).")
+    print("  - speed1: Fixed speed 1 (low).")
+    print("  - speed2: Fixed speed 2 (medium).")
+    print("  - speed3: Fixed speed 3 (high).")
+
+
+def helpTimer():
+    print("usage: ventcli timer <duration>")
+    print("<duration> can be 15, 30 or 60. Other values will yield an error")
+
+
+def invalidCommand(args):
+    print("No valid command specified. Enter 'ventli help' for a list of all commands.")
+    return 1
+    
+
+def setMode(args):
+    global modeEndPoint
+
+    validArgs = ["away", "auto", "speed1", "speed2", "speed3"]
+    try:
+        if args[0] not in validArgs:
+            print("Invalid mode specified.")
+            return 1
+    except IndexError:
+        print("No mode specified.")
+        return 1
+
+    requests.post(url = modeEndPoint, data = {"mode": args[0]})
+    return 0
+
+
+def setTimer(args):
+    global timerEndPoint
+
+    validArgs = ["15", "30", "60"]
+    try:
+        if args[0] not in validArgs:
+            print("Invalid duration specified.")
+            return 1
+    except IndexError:
+        print("No duration specified.")
+        return 1
+
+    requests.post(url = timerEndPoint, data = {"duration": args[0]})
+    return 0
+
+
+def getConfigPath():
+    searchPaths = ["~/.ventcli.conf", "/usr/local/etc/ventcli.conf", "/etc/ventcli.conf"]
+    for path in searchPaths:
+        if os.path.isfile(path):
+            return path
+    raise Exception("No configuration file found in any of the search paths.")
+
+
+###############
+#   M A I N   #
+###############
+
+handlers = {
+    "help": help,
+    "mode": setMode,
+    "timer": setTimer
+}
+
+config = configparser.ConfigParser()
+config.read(getConfigPath())
+modeEndPoint = config.get('endpoints', 'mode')
+timerEndPoint = config.get('endpoints', 'timer')
+
+command = ""
+attributes = []
+try:
+    command = sys.argv[1]
+    attributes = sys.argv[2:]
+except IndexError:
+    pass
+
+func = handlers.get(command, invalidCommand)
+func(attributes)
+

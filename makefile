@@ -13,3 +13,7 @@ nodejs:
 .PHONY: nginx
 nginx:
 	ansible-playbook -i inventory main.yaml --tags nginx
+
+.PHONY: schedule
+schedule:
+	ansible-playbook -i inventory main.yaml --tags schedule
